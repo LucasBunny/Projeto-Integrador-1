@@ -4,17 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/styles.css">
-    <title>Main Screen</title>
+    <title>Painel Barbearia</title>
 </head>
 <body>
-    <!-- Criação dos links de navegação da pagina Principal ! -->
-    <h2>Lista de Agendamentos</h2>
-        <!--Esse "?id=x" vai ser usado no JS-->
-    <ul>
-        <li><a href="agendamento.html?id=1">Corte | João  | 25/03 14:00</a></li>
-        <li><a href="agendamento.html?id=2">Barba | Maria | 26/03 16:00</a></li>
-    </ul>
-    <p><a href="agendamento.html">Adicionar Agendamentos</a></p>
-    <p><a href="./">Configurações</a></p>
+    <header>
+        <div class="logo">
+            <img src="/imgs/icons/barba.png" alt="Logo Barbearia">
+            <nav>
+                <a href="#">HOME</a>
+                <a href="#">ADICIONAR AGENDAMENTO</a>
+                <a href="#">CONFIGURAÇÃO</a>
+            </nav>
+        </div>
+
+        <div class="top-right">
+            28/04 - 21:31
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>29/04 - 10:30</h2>
+            <div class="service">Serviço: Corte e Barba</div>
+            <div class="edit">EDITAR</div>
+        </div>
+
+        <div class="card">
+            <h2>29/04 - 10:30</h2>
+            <div class="service">Serviço: Corte e Barba</div>
+            <div class="edit">EDITAR</div>
+        </div>
+
+        <div class="card">
+            <h2>29/04 - 10:30</h2>
+            <div class="service">Serviço: Corte e Barba</div>
+            <div class="edit">EDITAR</div>
+        </div>
+
+        <div class="card">
+            <h2>29/04 - 10:30</h2>
+            <div class="service">Serviço: Corte e Barba</div>
+            <div class="edit">EDITAR</div>
+        </div>
+    </div>
 </body>
 </html>

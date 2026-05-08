@@ -1,4 +1,127 @@
-a{
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: monospace;
+}
+
+body {
+    background-color: #ff8c1a;
+    background-color: linear-gradient(to bottom, #ff8c1a 0%, #c76812 65%, #000 100%);
+    min-height: 100vh;
+    color: #111;
+}
+
+header{
+    width: 100%;
+    height: 80px;
+    background: #ff8c1a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
+    border-bottom: 2px solid #000;
+
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo img {
+    width: 45px;
+    height: 40px;
+    object-fit: contain;
+}
+
+nav {
+    display: flex;
+    gap: 40px;
+    margin-left: 40px;
+}
+
+nav a {
     text-decoration: none;
-    color: inherit;
-};
+    color: #111;
+    font-weight: bold;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+nav a:hover {
+    transform: scale(1.05);
+}
+
+.top-right {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.container{
+    width: 92%;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.card{
+    background-color: rgba(255, 190, 120, 0.55);
+    border: 2px solid #111;
+    border-radius: 8px;
+    padding: 22px 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
+
+.card h2 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.service {
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.edit{
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+
+.edit:hover{
+    transform: scale(1.08);
+}
+
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    nav {
+        gap: 20px;
+        margin-left: 0;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .card{
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+
+}
