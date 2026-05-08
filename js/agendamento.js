@@ -1,28 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Agendamento</title>
-</head>
-<body>
-
-    <h2>Agendamento</h2>
-
-    <form id="formAgendamento">
-        <label>Nome:</label><br>
-        <input type="text" id="nome"><br><br>
-
-        <label>Serviço:</label><br>
-        <input type="text" id="servico"><br><br>
-
-        <label>Horário:</label><br>
-        <input type="datetime-local" id="horario"><br><br>
-
-        <button type="submit">Salvar</button>
-    </form>
-
-    <script>
-        // 1. Simular dados (descobri que simular dados se chama "mock")
+// 1. Simular dados (descobri que simular dados se chama "mock")
         const agendamentos = [
         { id: 1, servico: "Corte", nome: "João", horario: "2026-03-25T14:00" },
         { id: 2, servico: "Barba", nome: "Maria", horario: "2026-03-26T16:00" }
@@ -32,7 +8,13 @@
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
 
-        // 3. Se tiver id → preencher formulário
+        //Pegar botão excluir e se NÃO tiver id esconder botão
+        const btnExcluir = document.getElementById("btnExcluir");
+        if (!id) {
+            btnExcluir.style.display = "none";
+        } 
+        
+        // 3. Se tiver id - preencher formulário
         if (id) {
         const agendamento = agendamentos.find(a => a.id == id);
 
@@ -61,6 +43,3 @@
         // redirecionar - pagina principal
         window.location.href = "MainScreen.html";
         });
-    </script>
-</body>
-</html>
