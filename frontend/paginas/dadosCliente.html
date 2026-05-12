@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dados Clientes</title>
+
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <h3>CADASTRAR CLIENTE</h3>
+    
+    <input type="text" id="nomeCliente" placeholder="Nome"><br>
+    <input type="text" id="celularCliente" placeholder="(11) 9xxxx-xxxx" maxlength="15"><br>
+    
+    <br><br>
+
+    <button id="btnAdicionar">ADICIONAR</button>
+    <button id="btnCancelarCadastro">CANCELAR</button>
+
+    <br><br>
+
+    <h3>PROCURAR CLIENTE</h3>
+
+    <input type="text" id="buscarNome" placeholder="Nome"><br>
+    <input type="text" id="buscarCelular" placeholder="(11) 9xxxx-xxxx"><br>
+    
+    <br><br>
+
+    <button id="btnProcurar">PROCURAR</button>
+    <button id="btnCancelarBusca">CANCELAR</button>
+
+    <br><br>
+
+    <h3>LISTA</h3>
+
+    <div class="lista-clientes">
+
+        <ul id="listaClientes"></ul>
+
+    </div>
+
+    <button id="btnModificar">MODIFICAR</button>
+    <button id="btnExcluir">EXCLUIR</button>
+
+    <script src="../js/dadosClientes.js"></script>
+
+</body>
+</html>
