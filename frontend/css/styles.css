@@ -171,3 +171,22 @@ nav a:hover {
 .selecionado{
     background-color: lightblue;
 }
+.settings-page{
+    width: 447px;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.config-btn{
+    background-color: rgba(255, 190, 120, 0.55);
+    border: 2px solid #111;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 50px;
+    padding: 22px 35px;
+}
+
+
+
