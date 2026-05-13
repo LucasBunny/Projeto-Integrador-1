@@ -129,31 +129,45 @@ nav a:hover {
 .lista-clientes{
     width: 400px;
     max-height: 250px;
-
     overflow-y: auto;
-
     border: 1px solid black;
-
     padding: 10px;
 }
 
 .lista-clientes li{
-
     cursor: pointer;
-
     padding: 8px;
-
     margin-bottom: 5px;
-
     border: 1px solid gray;
 }
 
 .lista-clientes li:hover{
-
     background-color: #ddd;
 }
 
 .selecionado{
+    background-color: lightblue;
+}
 
+.lista-servico{
+    width: 400px;
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.lista-servico li{
+    cursor: pointer;
+    padding: 8px;
+    margin-bottom: 5px;
+    border: 1px solid gray;
+}
+
+.lista-servico li:hover{
+    background-color: #ddd;
+}
+
+.selecionado{
     background-color: lightblue;
 }

@@ -1,3 +1,8 @@
+// URL PARAMS
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+// DOM
 const nomeCliente = document.getElementById("nomeCliente");
 const buscarNome = document.getElementById("buscarNome");
 const celularCliente = document.getElementById("celularCliente");
@@ -12,22 +17,28 @@ const btnProcurar = document.getElementById("btnProcurar");
 
 const listaClientes = document.getElementById("listaClientes");
 
+// STATE
 let clienteSelecionado = null;
 let modoEdicao = false;
-let clientes = [];
 
-// Mascaras
+let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+
+// STORAGE HELPERS
+function salvarClientes() {
+    localStorage.setItem("clientes", JSON.stringify(clientes));
+}
+
+// MÁSCARAS
 function formatarNome(input) {
-
     input.addEventListener("input", function () {
-
         let valor = input.value;
 
-        valor = valor.slice(0, 11);
+        valor = valor.slice(0, 50);
         valor = valor.replace(/[^a-zA-ZÀ-ÿ\s]/g, "");
         valor = valor.toLowerCase();
-        valor = valor.replace(/\b\w/g, function (letra) {
-            return letra.toUpperCase();
+
+        valor = valor.replace(/(^|[\s-])(\p{L})/gu, function (_, sep, letra) {
+            return sep + letra.toUpperCase();
         });
 
         input.value = valor;
@@ -35,9 +46,7 @@ function formatarNome(input) {
 }
 
 function mascaraCelular(input) {
-
     input.addEventListener("input", function () {
-
         let valor = input.value;
 
         valor = valor.replace(/\D/g, "");
@@ -48,80 +57,76 @@ function mascaraCelular(input) {
     });
 }
 
+// aplica máscaras
 formatarNome(nomeCliente);
 formatarNome(buscarNome);
 mascaraCelular(celularCliente);
 mascaraCelular(buscarCelular);
 
+// LISTA
 function atualizarLista() {
-
     listaClientes.innerHTML = "";
 
-    clientes.forEach(function (cliente, index) {
-
+    clientes.forEach((cliente, index) => {
         const item = document.createElement("li");
-        item.textContent =
-            `CLIENTE: ${cliente.nome} / Celular: ${cliente.celular}`;
-    
-        // clique para selecionar
-        item.addEventListener("click", function () {
 
-            // remove seleção antiga
-            const itens = document.querySelectorAll("li");
-            itens.forEach(function (li) {
-                li.classList.remove("selecionado");
-            });
+        item.textContent = `CLIENTE: ${cliente.nome} / Celular: ${cliente.celular}`;
 
-            // adiciona seleção atual
+        item.addEventListener("click", () => {
+
+            document.querySelectorAll("li")
+                .forEach(li => li.classList.remove("selecionado"));
+
             item.classList.add("selecionado");
 
-            // guarda índice
             clienteSelecionado = index;
         });
 
         listaClientes.appendChild(item);
     });
-
 }
 
+atualizarLista();
 
+// ADICIONAR
 btnAdicionar.addEventListener("click", function () {
 
     const nome = nomeCliente.value.trim();
     const celular = celularCliente.value.trim();
     const celularNumeros = celular.replace(/\D/g, "");
 
-    if (nome === "" || celular === "") {
+    if (!nome || !celular) {
         alert("Preencha todos os campos!");
         return;
     }
 
     if (celularNumeros.length !== 11) {
         alert("Digite um celular válido!");
-
         return;
     }
 
     const cliente = {
-        nome: nome,
-        celular: celular
+        nome,
+        celular
     };
 
-    if (modoEdicao === true) {
-    clientes[clienteSelecionado] = cliente;
-    modoEdicao = false;
-    clienteSelecionado = null;
-    } else{
+    if (modoEdicao) {
+        clientes[clienteSelecionado] = cliente;
+        modoEdicao = false;
+        btnAdicionar.textContent = "ADICIONAR";
+        clienteSelecionado = null;
+    } else {
         clientes.push(cliente);
     }
 
+    salvarClientes();
     atualizarLista();
 
     nomeCliente.value = "";
     celularCliente.value = "";
 });
 
-
+// EXCLUIR
 btnExcluir.addEventListener("click", function () {
 
     if (clienteSelecionado === null) {
@@ -130,12 +135,14 @@ btnExcluir.addEventListener("click", function () {
     }
 
     clientes.splice(clienteSelecionado, 1);
+
     clienteSelecionado = null;
 
+    salvarClientes();
     atualizarLista();
 });
 
-
+// MODIFICAR
 btnModificar.addEventListener("click", function () {
 
     if (clienteSelecionado === null) {
@@ -145,71 +152,58 @@ btnModificar.addEventListener("click", function () {
 
     nomeCliente.value = clientes[clienteSelecionado].nome;
     celularCliente.value = clientes[clienteSelecionado].celular;
+
     modoEdicao = true;
+    btnAdicionar.textContent = "SALVAR";
 });
 
 
+// CANCELAR CADASTRO
 btnCancelarCadastro.addEventListener("click", function () {
 
     nomeCliente.value = "";
     celularCliente.value = "";
 
     clienteSelecionado = null;
-
     modoEdicao = false;
 
-    // remove destaque visual
-    const itens = document.querySelectorAll("li");
+    btnAdicionar.textContent = "ADICIONAR";
 
-    itens.forEach(function (li) {
-
-        li.classList.remove("selecionado");
-    });
+    document.querySelectorAll("li")
+        .forEach(li => li.classList.remove("selecionado"));
 });
 
-
+// BUSCA
 btnCancelarBusca.addEventListener("click", function () {
     buscarNome.value = "";
     buscarCelular.value = "";
 });
 
-
 btnProcurar.addEventListener("click", function () {
 
-    const nomeBusca =
-        buscarNome.value.trim().toLowerCase();
+    let encontrou = false;
 
-    const celularBusca =
-        buscarCelular.value.trim();
+    const nomeBusca = buscarNome.value.trim().toLowerCase();
+    const celularBusca = buscarCelular.value.trim();
 
-    const itens = document.querySelectorAll("li");
-
-    itens.forEach(function (item) {
-
-        item.classList.remove("selecionado");
-    });
+    document.querySelectorAll("li")
+        .forEach(li => li.classList.remove("selecionado"));
 
     clienteSelecionado = null;
 
-    clientes.forEach(function (cliente, index) {
+    clientes.forEach((cliente, index) => {
 
-        const nomeCorresponde =
-            cliente.nome.toLowerCase().includes(nomeBusca);
+        const nomeOk = cliente.nome.toLowerCase().includes(nomeBusca);
+        const celularOk = cliente.celular.includes(celularBusca);
 
-        const celularCorresponde =
-            cliente.celular.includes(celularBusca);
+        if (nomeOk && celularOk) {
+            const item = listaClientes.children[index];
 
-        if (nomeCorresponde && celularCorresponde) {
-            const itemLista = itens[index];
-            itemLista.classList.add("selecionado");
+            item.classList.add("selecionado");
             clienteSelecionado = index;
             encontrou = true;
         }
-
-        if (encontrou === true) {
-            alert("Cliente encontrado!");
-        } else {
-            alert("Cliente não encontrado!");
-        }
     });
+
+    alert(encontrou ? "Cliente encontrado!" : "Cliente não encontrado!");
 });

@@ -4,28 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dados Serviços</title>
+
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
+
 <body>
     <h3>CADASTRAR SERVIÇO</h3>
-    <input type="text" placeholder="Nome"><br>
-    <input type="number" placeholder="Celular"><br>
-    <button>ADICIONAR</button>
-    <button>CANCELAR</button>
-    <br>
-    <br>
+
+    <input type="text" id="nomeServico" placeholder="Nome"><br>
+    <input type="number" id="precoServico" placeholder="Preço"><br>
+
+    <button id="btnAdicionar">ADICIONAR</button>
+    <button id="btnCancelarCadastro">CANCELAR</button>
+    <br><br>
+
     <h3>PROCURAR SERVIÇO</h3>
-    <input type="text" placeholder="Nome"><br>
-    <button>PROCURAR</button>
-    <button>CANCELAR</button>
-    <br>
-    <br>
+    <input type="text" id="procurarServico" placeholder="Nome"><br>
+
+    <button id="btnProcurar">PROCURAR</button>
+    <button id="btnCancelarBusca">CANCELAR</button>
+    <br><br>
+
     <h3>LISTA</h3>
-    <ul>
-        <li>SERVIÇO: (Serviço 1) / Preço: R$ (Preço 1)</li>
-        <li>SERVIÇO: (Serviço 2) / Preço: R$ (Preço 2)</li>
-        <li>SERVIÇO: (Serviço 3) / Preço: R$ (Preço 3)</li>
-    </ul>
-    <button>MODIFICAR</button>
-    <button>EXCLUIR</button>
+
+    <div class="lista-servico">
+        <ul id="listaServico"></ul>
+    </div>
+
+    <button id="btnModificar">MODIFICAR</button>
+    <button id="btnExcluir">EXCLUIR</button>
+
+    <script src="../js/dadosServico.js"> </script>
 </body>
 </html>

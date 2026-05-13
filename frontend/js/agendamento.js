@@ -1,40 +1,108 @@
-const agendamentos = [
-    { id: 1, servico: "Corte", nome: "João", horario: "2026-03-25T14:00" },
-    { id: 2, servico: "Barba", nome: "Maria", horario: "2026-03-26T16:00" }
-];
-
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
+//  DOM 
+const titulo = document.getElementById("titulo");
+const btnSalvar = document.getElementById("btnSalvar");
 const btnExcluir = document.getElementById("btnExcluir");
-if (!id) {
-    btnExcluir.style.display = "none";
-} 
-        
-if (id) {
-    const agendamento = agendamentos.find(a => a.id == id);
+const btnCancelar = document.getElementById("btnCancelar");
 
-    if (agendamento) {
-        document.getElementById("nome").value = agendamento.nome;
-        document.getElementById("servico").value = agendamento.servico;
-        document.getElementById("horario").value = agendamento.horario;
-    }
-}
+const inputNome = document.getElementById("nome");
+const inputServico = document.getElementById("servico");
+const inputHorario = document.getElementById("horario");
 
 const form = document.getElementById("formAgendamento");
 
-form.addEventListener("submit", function(e) {
+function getAgendamentos() {
+    return JSON.parse(localStorage.getItem("agendamentos")) || [];
+}
+
+function saveAgendamentos(data) {
+    localStorage.setItem("agendamentos", JSON.stringify(data));
+}
+
+//  CLIENTES 
+const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+
+clientes.forEach(cliente => {
+    const option = document.createElement("option");
+    option.value = cliente.nome;
+    option.textContent = cliente.nome;
+    inputNome.appendChild(option);
+});
+
+//  SERVIÇOS 
+const servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+
+servicos.forEach(item => {
+    const option = document.createElement("option");
+    option.value = item.nome;
+    option.textContent = item.nome;
+    inputServico.appendChild(option);
+});
+
+//  INIT (EDIÇÃO OU NOVO) 
+const agendamentos = getAgendamentos();
+
+if (id) {
+    titulo.textContent = "EDITAR AGENDAMENTO";
+    btnSalvar.textContent = "SALVAR";
+
+    const agendamento = agendamentos.find(a => a.id == id);
+
+    if (agendamento) {
+        inputNome.value = agendamento.nome;
+        inputServico.value = agendamento.servico;
+        inputHorario.value = agendamento.horario;
+    }
+} else {
+    titulo.textContent = "NOVO AGENDAMENTO";
+    btnSalvar.textContent = "ADICIONAR";
+    btnExcluir.style.display = "none";
+}
+
+//  SALVAR 
+form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const nome = document.getElementById("nome").value;
-    const servico = document.getElementById("servico").value;
-    const horario = document.getElementById("horario").value;
-
-    if (id) {
-        console.log("Editando agendamento:", { id, nome, servico, horario });
-    } else {
-        console.log("Criando novo agendamento:", { nome, servico, horario });
+    if (!inputNome.value || !inputServico.value || !inputHorario.value) {
+        alert("Preencha todos os campos!");
+        return;
     }
 
+    const agendamentos = getAgendamentos();
+
+    const dados = {
+        id: id ? Number(id) : Date.now(),
+        nome: inputNome.value,
+        servico: inputServico.value,
+        horario: inputHorario.value
+    };
+
+    if (id) {
+        const index = agendamentos.findIndex(a => a.id == id);
+        agendamentos[index] = dados;
+    } else {
+        agendamentos.push(dados);
+    }
+
+    saveAgendamentos(agendamentos);
+
+    window.location.href = "./telaPrincipal.html";
+});
+
+//  EXCLUIR 
+btnExcluir.addEventListener("click", function () {
+    let agendamentos = getAgendamentos();
+
+    agendamentos = agendamentos.filter(a => a.id != id);
+
+    saveAgendamentos(agendamentos);
+
+    window.location.href = "./telaPrincipal.html";
+});
+
+//  CANCELAR 
+btnCancelar.addEventListener("click", function () {
     window.location.href = "./telaPrincipal.html";
 });
