@@ -7,15 +7,16 @@ function atualizarDataHora() {
     const mes = String(agora.getMonth() + 1).padStart(2, "0");
     const horas = String(agora.getHours()).padStart(2, "0");
     const minutos = String(agora.getMinutes()).padStart(2, "0");
+
     dataHora.textContent = `${dia}/${mes} - ${horas}:${minutos}`;
 }
 
 atualizarDataHora();
 setInterval(atualizarDataHora, 1000);
 
-const agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
 const lista = document.getElementById("listaAgendamentos");
 
+// FORMATAR DATA
 function formatarData(dataISO) {
 
     const data = new Date(dataISO);
@@ -27,29 +28,41 @@ function formatarData(dataISO) {
     return `${dia}/${mes} - ${horas}:${minutos}`;
 }
 
-agendamentos.forEach(function (agendamento) {
+// CARREGAR DO BACKEND
+async function carregarAgendamentos() {
 
-    const card = document.createElement("div");
-    card.classList.add("card");
-    card.innerHTML = `<h2>${formatarData(agendamento.horario)}</h2>
+    const resposta = await fetch("http://localhost:3000/agendamentos");
+    const agendamentos = await resposta.json();
 
-        <div class="service">
-            Cliente: ${agendamento.nome}
-            <br>
-            Serviço: ${agendamento.servico}
-        </div>
+    lista.innerHTML = "";
 
-        <div class="edit">
-            EDITAR
-        </div>
-    `;
+    agendamentos.forEach(function (agendamento) {
 
-    const btnEditar = card.querySelector(".edit");
+        const card = document.createElement("div");
+        card.classList.add("card");
 
-    btnEditar.addEventListener("click", function () {
+        card.innerHTML = `
+            <h2>${formatarData(agendamento.data_agendamento)}</h2>
 
-        window.location.href = `./agendamento.html?id=${agendamento.id}`;
+            <div class="service">
+                Cliente: ${agendamento.cliente_nome}
+                <br>
+                Serviço: ${agendamento.servico_nome}
+            </div>
+
+            <div class="edit" style="cursor:pointer">
+                EDITAR
+            </div>
+        `;
+
+        const btnEditar = card.querySelector(".edit");
+
+        btnEditar.addEventListener("click", function () {
+            window.location.href = `./agendamento.html?id=${agendamento.id}`;
+        });
+
+        lista.appendChild(card);
     });
+}
 
-    lista.appendChild(card);
-});
+carregarAgendamentos();

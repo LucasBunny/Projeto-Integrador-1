@@ -1,4 +1,3 @@
-
 // DOM
 const nomeServico = document.getElementById("nomeServico");
 const precoServico = document.getElementById("precoServico");
@@ -14,15 +13,18 @@ const btnProcurar = document.getElementById("btnProcurar");
 const listaServico = document.getElementById("listaServico");
 
 // STATE
+let servicos = [];
 let servicoSelecionado = null;
 let modoEdicao = false;
 
-let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
-
-// STORAGE
-function salvarServicos() {
-    localStorage.setItem("servicos", JSON.stringify(servicos));
+// CARREGAR DO BACKEND
+async function carregarServicos() {
+    const resposta = await fetch("http://localhost:3000/servicos");
+    servicos = await resposta.json();
+    atualizarLista();
 }
+
+carregarServicos();
 
 // MÁSCARAS
 function formatarNome(input) {
@@ -51,7 +53,7 @@ function atualizarLista() {
 
     listaServico.innerHTML = "";
 
-    servicos.forEach((servico, index) => {
+    servicos.forEach((servico) => {
 
         const item = document.createElement("li");
 
@@ -59,22 +61,20 @@ function atualizarLista() {
 
         item.addEventListener("click", () => {
 
-            document.querySelectorAll("li")
+            document.querySelectorAll("#listaServico li")
                 .forEach(li => li.classList.remove("selecionado"));
 
             item.classList.add("selecionado");
 
-            servicoSelecionado = index;
+            servicoSelecionado = servico;
         });
 
         listaServico.appendChild(item);
     });
 }
 
-atualizarLista();
-
-// ADICIONAR
-btnAdicionar.addEventListener("click", function () {
+// ADICIONAR / EDITAR
+btnAdicionar.addEventListener("click", async function () {
 
     const nome = nomeServico.value.trim();
     const preco = precoServico.value.trim();
@@ -84,59 +84,94 @@ btnAdicionar.addEventListener("click", function () {
         return;
     }
 
-    const servico = {
-        nome,
-        preco
-    };
+    try {
 
-    if (modoEdicao) {
+        // MODO EDITAR (SALVAR)
+        if (modoEdicao && servicoSelecionado) {
+            console.log("SERVIÇO SELECIONADO:", servicoSelecionado);
 
-        servicos[servicoSelecionado] = servico;
+            const resposta = await fetch(`http://localhost:3000/servicos/${servicoSelecionado.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ nome, preco })
+            });
 
-        modoEdicao = false;
-        btnAdicionar.textContent = "ADICIONAR";
-        servicoSelecionado = null;
+            const resultado = await resposta.json();
+            alert(resultado.mensagem);
 
-    } else {
-        servicos.push(servico);
+            modoEdicao = false;
+            servicoSelecionado = null;
+            btnAdicionar.textContent = "ADICIONAR";
+        }
+
+        // MODO ADICIONAR
+        else {
+
+            const resposta = await fetch("http://localhost:3000/servicos", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ nome, preco })
+            });
+
+            const resultado = await resposta.json();
+            alert(resultado.mensagem);
+        }
+
+        nomeServico.value = "";
+        precoServico.value = "";
+
+        carregarServicos();
+
+    } catch (erro) {
+        console.log("Erro:", erro);
+        alert("Erro ao salvar serviço");
     }
-
-    salvarServicos();
-    atualizarLista();
-
-    nomeServico.value = "";
-    precoServico.value = "";
 });
 
-// EXCLUIR
-btnExcluir.addEventListener("click", function () {
-
-    if (servicoSelecionado === null) {
-        alert("Selecione um serviço!");
-        return;
-    }
-
-    servicos.splice(servicoSelecionado, 1);
-
-    servicoSelecionado = null;
-
-    salvarServicos();
-    atualizarLista();
-});
-
-// MODIFICAR
+//MODIFICAR
 btnModificar.addEventListener("click", function () {
 
-    if (servicoSelecionado === null) {
+    if (!servicoSelecionado) {
         alert("Selecione um serviço!");
         return;
     }
 
-    nomeServico.value = servicos[servicoSelecionado].nome;
-    precoServico.value = servicos[servicoSelecionado].preco;
+    nomeServico.value = servicoSelecionado.nome;
+    precoServico.value = servicoSelecionado.preco;
 
     modoEdicao = true;
     btnAdicionar.textContent = "SALVAR";
+});
+
+// EXCLUIR
+btnExcluir.addEventListener("click", async function () {
+
+    if (!servicoSelecionado) {
+        alert("Selecione um serviço!");
+        return;
+    }
+
+    try {
+
+        const resposta = await fetch(`http://localhost:3000/servicos/${servicoSelecionado.id}`, {
+            method: "DELETE"
+        });
+
+        const resultado = await resposta.json();
+        alert(resultado.mensagem);
+
+        servicoSelecionado = null;
+
+        carregarServicos();
+
+    } catch (erro) {
+        console.log("Erro:", erro);
+        alert("Erro ao excluir serviço");
+    }
 });
 
 // CANCELAR CADASTRO
@@ -150,19 +185,13 @@ btnCancelarCadastro.addEventListener("click", function () {
 
     btnAdicionar.textContent = "ADICIONAR";
 
-    document.querySelectorAll("li")
+    document.querySelectorAll("#listaServico li")
         .forEach(li => li.classList.remove("selecionado"));
 });
 
 // CANCELAR BUSCA
 btnCancelarBusca.addEventListener("click", function () {
-
     procurarServico.value = "";
-
-    document.querySelectorAll("li")
-        .forEach(li => li.classList.remove("selecionado"));
-
-    servicoSelecionado = null;
 });
 
 // BUSCA
@@ -170,27 +199,16 @@ btnProcurar.addEventListener("click", function () {
 
     const busca = procurarServico.value.trim().toLowerCase();
 
-    document.querySelectorAll("li")
+    document.querySelectorAll("#listaServico li")
         .forEach(li => li.classList.remove("selecionado"));
-
-    servicoSelecionado = null;
-
-    let encontrou = false;
 
     servicos.forEach((servico, index) => {
 
-        const nomeOk = servico.nome.toLowerCase().includes(busca);
-
-        if (nomeOk) {
+        if (servico.nome.toLowerCase().includes(busca)) {
 
             const item = listaServico.children[index];
 
-            item.classList.add("selecionado");
-
-            servicoSelecionado = index;
-            encontrou = true;
+            if (item) item.classList.add("selecionado");
         }
     });
-
-    alert(encontrou ? "Serviço encontrado!" : "Serviço não encontrado!");
 });

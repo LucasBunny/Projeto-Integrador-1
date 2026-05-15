@@ -1,7 +1,8 @@
+// URL PARAMS
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-//  DOM 
+// DOM
 const titulo = document.getElementById("titulo");
 const btnSalvar = document.getElementById("btnSalvar");
 const btnExcluir = document.getElementById("btnExcluir");
@@ -13,56 +14,73 @@ const inputHorario = document.getElementById("horario");
 
 const form = document.getElementById("formAgendamento");
 
-function getAgendamentos() {
-    return JSON.parse(localStorage.getItem("agendamentos")) || [];
+// CARREGAR CLIENTES
+async function carregarClientes() {
+    const resposta = await fetch("http://localhost:3000/clientes");
+    const clientes = await resposta.json();
+
+    clientes.forEach(cliente => {
+        const option = document.createElement("option");
+        option.value = cliente.id;
+        option.textContent = cliente.nome;
+        inputNome.appendChild(option);
+    });
 }
 
-function saveAgendamentos(data) {
-    localStorage.setItem("agendamentos", JSON.stringify(data));
+// CARREGAR SERVIÇOS
+async function carregarServicos() {
+    const resposta = await fetch("http://localhost:3000/servicos");
+    const servicos = await resposta.json();
+
+    servicos.forEach(servico => {
+        const option = document.createElement("option");
+        option.value = servico.id;
+        option.textContent = servico.nome;
+        inputServico.appendChild(option);
+    });
 }
 
-//  CLIENTES 
-const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+// INIT (EDITAR OU NOVO)
+async function carregarAgendamentoPorId(id) {
 
-clientes.forEach(cliente => {
-    const option = document.createElement("option");
-    option.value = cliente.nome;
-    option.textContent = cliente.nome;
-    inputNome.appendChild(option);
-});
+    if (!id || id === "null" || id === "undefined") return;
 
-//  SERVIÇOS 
-const servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+    const resposta = await fetch(`http://localhost:3000/agendamentos/${id}`);
 
-servicos.forEach(item => {
-    const option = document.createElement("option");
-    option.value = item.nome;
-    option.textContent = item.nome;
-    inputServico.appendChild(option);
-});
-
-//  INIT (EDIÇÃO OU NOVO) 
-const agendamentos = getAgendamentos();
-
-if (id) {
-    titulo.textContent = "EDITAR AGENDAMENTO";
-    btnSalvar.textContent = "SALVAR";
-
-    const agendamento = agendamentos.find(a => a.id == id);
-
-    if (agendamento) {
-        inputNome.value = agendamento.nome;
-        inputServico.value = agendamento.servico;
-        inputHorario.value = agendamento.horario;
+    if (!resposta.ok) {
+        console.log("Erro ao buscar agendamento");
+        return;
     }
-} else {
-    titulo.textContent = "NOVO AGENDAMENTO";
-    btnSalvar.textContent = "ADICIONAR";
-    btnExcluir.style.display = "none";
+
+    const agendamento = await resposta.json();
+
+    inputNome.value = String(agendamento.cliente_id);
+    inputServico.value = String(agendamento.servico_id);
+    inputHorario.value = agendamento.data_agendamento;
 }
 
-//  SALVAR 
-form.addEventListener("submit", function (e) {
+
+async function iniciar() {
+
+    await carregarClientes();
+    await carregarServicos();
+
+    if (id) {
+        titulo.textContent = "EDITAR AGENDAMENTO";
+        btnSalvar.textContent = "SALVAR";
+        btnExcluir.style.display = "block";
+
+        await carregarAgendamentoPorId(id);
+    } else {
+        titulo.textContent = "NOVO AGENDAMENTO";
+        btnExcluir.style.display = "none";
+    }
+}
+
+iniciar();
+
+// SALVAR (POST / PUT)
+form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     if (!inputNome.value || !inputServico.value || !inputHorario.value) {
@@ -70,39 +88,70 @@ form.addEventListener("submit", function (e) {
         return;
     }
 
-    const agendamentos = getAgendamentos();
-
     const dados = {
-        id: id ? Number(id) : Date.now(),
-        nome: inputNome.value,
-        servico: inputServico.value,
-        horario: inputHorario.value
+        cliente_id: inputNome.value,
+        servico_id: inputServico.value,
+        data_agendamento: inputHorario.value
     };
 
-    if (id) {
-        const index = agendamentos.findIndex(a => a.id == id);
-        agendamentos[index] = dados;
-    } else {
-        agendamentos.push(dados);
+    try {
+
+        if (id) {
+
+            const resposta = await fetch(`http://localhost:3000/agendamentos/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            });
+
+            const resultado = await resposta.json();
+            alert(resultado.mensagem);
+        }
+
+        else {
+
+            const resposta = await fetch("http://localhost:3000/agendamentos", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            });
+
+            const resultado = await resposta.json();
+            alert(resultado.mensagem);
+        }
+
+        window.location.href = "./telaPrincipal.html";
+
+    } catch (erro) {
+        console.log("Erro:", erro);
+        alert("Erro ao salvar agendamento");
     }
-
-    saveAgendamentos(agendamentos);
-
-    window.location.href = "./telaPrincipal.html";
 });
 
-//  EXCLUIR 
-btnExcluir.addEventListener("click", function () {
-    let agendamentos = getAgendamentos();
+// EXCLUIR
+btnExcluir.addEventListener("click", async function () {
 
-    agendamentos = agendamentos.filter(a => a.id != id);
+    if (!id) return;
 
-    saveAgendamentos(agendamentos);
+    try {
 
-    window.location.href = "./telaPrincipal.html";
+        await fetch(`http://localhost:3000/agendamentos/${id}`, {
+            method: "DELETE"
+        });
+
+        window.location.href = "./telaPrincipal.html";
+
+    } catch (erro) {
+        console.log("Erro ao excluir:", erro);
+        alert("Erro ao excluir agendamento");
+    }
 });
 
-//  CANCELAR 
+// CANCELAR
 btnCancelar.addEventListener("click", function () {
     window.location.href = "./telaPrincipal.html";
 });

@@ -5,20 +5,13 @@ const confirmarSenha = document.getElementById("confirmarSenha");
 const btnSalvar = document.getElementById("btnSalvar");
 const btnCancelar = document.getElementById("btnCancelar");
 
+btnSalvar.addEventListener("click", async function () {
 
-btnSalvar.addEventListener("click", function () {
-
-    // remove espaços vazios
     const nomeValor = nome.value.trim();
     const senhaValor = senha.value.trim();
     const confirmarSenhaValor = confirmarSenha.value.trim();
 
-    // Verifica se os campos estão vazios
-    if (
-        nomeValor === "" ||
-        senhaValor === "" ||
-        confirmarSenhaValor === ""
-    ) {
+    if (!nomeValor || !senhaValor || !confirmarSenhaValor) {
         alert("Preencha todos os campos!");
         return;
     }
@@ -28,18 +21,35 @@ btnSalvar.addEventListener("click", function () {
         return;
     }
 
-    // Salva no localStorage
-    localStorage.setItem("nomeUsuario", nomeValor);
-    localStorage.setItem("senhaUsuario", senhaValor);
+    try {
 
-    alert("Conta criada com sucesso!");
+        const resposta = await fetch("http://localhost:3000/barbeiros", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nome: nomeValor,
+                senha: senhaValor
+            })
+        });
 
-    // Redireciona para index.html
-    window.location.href = "./index.html";
+        const resultado = await resposta.json();
+
+        if (!resposta.ok) {
+            alert(resultado.erro || "Erro ao criar conta");
+            return;
+        }
+
+        alert("Conta criada com sucesso!");
+        window.location.href = "./index.html";
+
+    } catch (erro) {
+        console.log("Erro ao criar conta:", erro);
+        alert("Erro ao conectar com o servidor");
+    }
 });
 
 btnCancelar.addEventListener("click", function () {
-
-    // Apenas redireciona
     window.location.href = "./index.html";
 });

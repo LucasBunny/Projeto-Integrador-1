@@ -18,15 +18,9 @@ const btnProcurar = document.getElementById("btnProcurar");
 const listaClientes = document.getElementById("listaClientes");
 
 // STATE
+let clientes = [];
 let clienteSelecionado = null;
 let modoEdicao = false;
-
-let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
-
-// STORAGE HELPERS
-function salvarClientes() {
-    localStorage.setItem("clientes", JSON.stringify(clientes));
-}
 
 // MÁSCARAS
 function formatarNome(input) {
@@ -63,14 +57,24 @@ formatarNome(buscarNome);
 mascaraCelular(celularCliente);
 mascaraCelular(buscarCelular);
 
+// CARREGAR DO BACKEND
+async function carregarClientes() {
+    const resposta = await fetch("http://localhost:3000/clientes");
+    clientes = await resposta.json();
+
+    atualizarLista();
+}
+
+carregarClientes();
+
 // LISTA
 function atualizarLista() {
     listaClientes.innerHTML = "";
 
-    clientes.forEach((cliente, index) => {
+    clientes.forEach((cliente) => {
         const item = document.createElement("li");
 
-        item.textContent = `CLIENTE: ${cliente.nome} / Celular: ${cliente.celular}`;
+        item.textContent = `CLIENTE: ${cliente.nome} / Celular: ${cliente.telefone}`;
 
         item.addEventListener("click", () => {
 
@@ -78,71 +82,104 @@ function atualizarLista() {
                 .forEach(li => li.classList.remove("selecionado"));
 
             item.classList.add("selecionado");
-
-            clienteSelecionado = index;
+            clienteSelecionado = cliente;
         });
 
         listaClientes.appendChild(item);
     });
 }
 
-atualizarLista();
 
 // ADICIONAR
-btnAdicionar.addEventListener("click", function () {
+btnAdicionar.addEventListener("click", async function () {
 
     const nome = nomeCliente.value.trim();
-    const celular = celularCliente.value.trim();
-    const celularNumeros = celular.replace(/\D/g, "");
+    const telefone = celularCliente.value.trim();
+    const telefoneNumeros = telefone.replace(/\D/g, "");
 
-    if (!nome || !celular) {
+    if (!nome || !telefone) {
         alert("Preencha todos os campos!");
         return;
     }
 
-    if (celularNumeros.length !== 11) {
+    if (telefoneNumeros.length !== 11) {
         alert("Digite um celular válido!");
         return;
     }
 
-    const cliente = {
-        nome,
-        celular
-    };
+    try {
 
-    if (modoEdicao) {
-        clientes[clienteSelecionado] = cliente;
-        modoEdicao = false;
-        btnAdicionar.textContent = "ADICIONAR";
-        clienteSelecionado = null;
-    } else {
-        clientes.push(cliente);
+        // MODO EDITAR
+        if (clienteSelecionado && clienteSelecionado.id) {
+
+            const resposta = await fetch(`http://localhost:3000/clientes/${clienteSelecionado.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ nome, telefone })
+            });
+
+            const resultado = await resposta.json();
+
+            alert(resultado.mensagem);
+
+            clienteSelecionado = null;
+
+        } 
+        // MODO ADICIONAR
+        else {
+
+            const resposta = await fetch("http://localhost:3000/clientes", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ nome, telefone })
+            });
+
+            const resultado = await resposta.json();
+
+            alert(resultado.mensagem);
+        }
+
+        nomeCliente.value = "";
+        celularCliente.value = "";
+
+        carregarClientes();
+
+    } catch (erro) {
+        console.log("Erro:", erro);
+        alert("Erro ao salvar cliente");
     }
-
-    salvarClientes();
-    atualizarLista();
-
-    nomeCliente.value = "";
-    celularCliente.value = "";
 });
 
-// EXCLUIR
-btnExcluir.addEventListener("click", function () {
+// EXCLUIR (vai funcionar só se backend tiver DELETE)
+btnExcluir.addEventListener("click", async function () {
 
-    if (clienteSelecionado === null) {
+    if (!clienteSelecionado) {
         alert("Selecione um cliente!");
         return;
     }
 
-    clientes.splice(clienteSelecionado, 1);
+    try {
+        const resposta = await fetch(`http://localhost:3000/clientes/${clienteSelecionado.id}`, {
+            method: "DELETE"
+        });
 
-    clienteSelecionado = null;
+        const resultado = await resposta.json();
+        alert(resultado.mensagem);
 
-    salvarClientes();
-    atualizarLista();
+        clienteSelecionado = null;
+        carregarClientes();
+
+    } catch (erro) {
+        console.log("Erro ao excluir:", erro);
+        alert("Erro ao excluir cliente");
+    }
 });
 
-// MODIFICAR
+// MODIFICAR (ainda visual)
 btnModificar.addEventListener("click", function () {
 
     if (clienteSelecionado === null) {
@@ -150,13 +187,12 @@ btnModificar.addEventListener("click", function () {
         return;
     }
 
-    nomeCliente.value = clientes[clienteSelecionado].nome;
-    celularCliente.value = clientes[clienteSelecionado].celular;
+    nomeCliente.value = clienteSelecionado.nome;
+    celularCliente.value = clienteSelecionado.telefone;
 
     modoEdicao = true;
     btnAdicionar.textContent = "SALVAR";
 });
-
 
 // CANCELAR CADASTRO
 btnCancelarCadastro.addEventListener("click", function () {
@@ -191,16 +227,12 @@ btnProcurar.addEventListener("click", function () {
 
     clienteSelecionado = null;
 
-    clientes.forEach((cliente, index) => {
+    clientes.forEach((cliente) => {
 
         const nomeOk = cliente.nome.toLowerCase().includes(nomeBusca);
-        const celularOk = cliente.celular.includes(celularBusca);
+        const celularOk = cliente.telefone.includes(celularBusca);
 
         if (nomeOk && celularOk) {
-            const item = listaClientes.children[index];
-
-            item.classList.add("selecionado");
-            clienteSelecionado = index;
             encontrou = true;
         }
     });
