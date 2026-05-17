@@ -4,35 +4,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dados Serviços</title>
-
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 
 <body>
-    <h3>CADASTRAR SERVIÇO</h3>
+    <header>
+        <div class="logo">
+            <img src="/imgs/icons/barba.png" alt="Logo Barbearia">
+            <nav>
+                <a href="./telaPrincipal.html"> HOME </a>
+                <a href="./agendamento.html"> ADICIONAR AGENDAMENTO </a>
+                <a href="./configuracao.html"> CONFIGURAÇÃO </a>
+            </nav>
+        </div>
+        <div class="top-right"></div>
+    </header>
 
-    <input type="text" id="nomeServico" placeholder="Nome"><br>
-    <input type="number" id="precoServico" placeholder="Preço"><br>
+    <main class="container-servicos">
+        
+        <div class="card-servico">
+            <h3>CADASTRAR SERVIÇO</h3>
+            <div class="input-group-servico">
+                <input type="text" id="nomeServico" placeholder="Nome do Serviço">
+            </div>
+            <div class="input-group-servico">
+                <input type="number" id="precoServico" placeholder="Preço (R$)">
+            </div>
+            <div class="botoes-servico">
+                <button id="btnAdicionar" class="btn-servico btn-verde">ADICIONAR</button>
+                <button id="btnCancelarCadastro" class="btn-servico btn-cinza">CANCELAR</button>
+            </div>
+        </div>
 
-    <button id="btnAdicionar">ADICIONAR</button>
-    <button id="btnCancelarCadastro">CANCELAR</button>
-    <br><br>
+        <div class="card-servico">
+            <h3>PROCURAR SERVIÇO</h3>
+            <div class="input-group-servico">
+                <input type="text" id="procurarServico" placeholder="Nome do Serviço">
+            </div>
+            <div class="botoes-servico">
+                <button id="btnProcurar" class="btn-servico btn-laranja">PROCURAR</button>
+                <button id="btnCancelarBusca" class="btn-servico btn-cinza">CANCELAR</button>
+            </div>
 
-    <h3>PROCURAR SERVIÇO</h3>
-    <input type="text" id="procurarServico" placeholder="Nome"><br>
+            <hr class="divisor-servico">
 
-    <button id="btnProcurar">PROCURAR</button>
-    <button id="btnCancelarBusca">CANCELAR</button>
-    <br><br>
+            <h3>LISTA DE SERVIÇOS</h3>
+            <div class="lista-servico">
+                <ul id="listaServico">
+                    </ul>
+            </div>
 
-    <h3>LISTA</h3>
+            <div class="botoes-servico">
+                <button id="btnModificar" class="btn-servico btn-azul">MODIFICAR</button>
+                <button id="btnExcluir" class="btn-servico btn-vermelho">EXCLUIR</button>
+            </div>
+        </div>
 
-    <div class="lista-servico">
-        <ul id="listaServico"></ul>
-    </div>
+    </main>
 
-    <button id="btnModificar">MODIFICAR</button>
-    <button id="btnExcluir">EXCLUIR</button>
+    <script src="../js/dadosServico.js"> </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dados Serviços</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="/imgs/icons/barba.png" alt="Logo Barbearia">
+            <nav>
+                <a href="./telaPrincipal.html"> HOME </a>
+                <a href="./agendamento.html"> ADICIONAR AGENDAMENTO </a>
+                <a href="./configuracao.html"> CONFIGURAÇÃO </a>
+            </nav>
+        </div>
+        <div class="top-right"></div>
+    </header>
+
+    <main class="container-servicos">
+        
+        <div class="card-servico">
+            <h3>CADASTRAR SERVIÇO</h3>
+            <div class="input-group-servico">
+                <input type="text" id="nomeServico" placeholder="Nome do Serviço">
+            </div>
+            <div class="input-group-servico">
+                <input type="number" id="precoServico" placeholder="Preço (R$)">
+            </div>
+            <div class="botoes-servico">
+                <button id="btnAdicionar" class="btn-servico btn-verde">ADICIONAR</button>
+                <button id="btnCancelarCadastro" class="btn-servico btn-cinza">CANCELAR</button>
+            </div>
+        </div>
+
+        <div class="card-servico">
+            <h3>PROCURAR SERVIÇO</h3>
+            <div class="input-group-servico">
+                <input type="text" id="procurarServico" placeholder="Nome do Serviço">
+            </div>
+            <div class="botoes-servico">
+                <button id="btnProcurar" class="btn-servico btn-laranja">PROCURAR</button>
+                <button id="btnCancelarBusca" class="btn-servico btn-cinza">CANCELAR</button>
+            </div>
+
+            <hr class="divisor-servico">
+
+            <h3>LISTA DE SERVIÇOS</h3>
+            <div class="lista-servico">
+                <ul id="listaServico">
+                    </ul>
+            </div>
+
+            <div class="botoes-servico">
+                <button id="btnModificar" class="btn-servico btn-azul">MODIFICAR</button>
+                <button id="btnExcluir" class="btn-servico btn-vermelho">EXCLUIR</button>
+            </div>
+        </div>
+
+    </main>
 
     <script src="../js/dadosServico.js"> </script>
 </body>

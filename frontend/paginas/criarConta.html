@@ -1,30 +1,47 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <title>Criar Conta</title>
 </head>
-
 <body>
 
-    <h3>Nome:</h3>
-    <input type="text" id="nome" placeholder="Digite o Nome Completo">
+    <main class="wrapper-cadastro">
+        <div class="card-cadastro">
+            
+            <div class="top_card">
+                <h2>CRIAR CONTA</h2>
+            </div>
 
-    <h3>Senha:</h3>
-    <input type="password" id="senha" placeholder="Digite a Senha">
+            <form id="formCriarConta">
+                <div class="inputs_card">
+                    <div class="input-group-cadastro">
+                        <label for="nome">Nome:</label>
+                        <input type="text" id="nome" placeholder="Digite o Nome Completo">
+                    </div>
 
-    <h3>Confirme a Senha:</h3>
-    <input type="password" id="confirmarSenha" placeholder="Digite a Senha novamente">
+                    <div class="input-group-cadastro">
+                        <label for="senha">Senha:</label>
+                        <input type="password" id="senha" placeholder="Digite a Senha">
+                    </div>
 
-    <br><br>
+                    <div class="input-group-cadastro">
+                        <label for="confirmarSenha">Confirme a Senha:</label>
+                        <input type="password" id="confirmarSenha" placeholder="Digite a Senha novamente">
+                    </div>
+                </div>
 
-    <button id="btnSalvar">Salvar</button>
-    <button id="btnCancelar">Cancelar</button>
+                <div class="buttons_card">
+                    <button type="submit" id="btnSalvar" class="btn-cadastro btn-salvar">Salvar</button>
+                    <button type="button" id="btnCancelar" class="btn-cadastro btn-cancelar">Cancelar</button>
+                </div>
+            </form>
+            
+        </div>
+    </main>
 
     <script src="../js/criarConta.js"></script>
 </body>
-
 </html>

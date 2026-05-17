@@ -2,37 +2,57 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agendamento</title>
+  <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
 
-    <h2 id="titulo">Agendamento</h2>
+    <header>
+        <div class="logo">
+            <img src="/imgs/icons/barba.png" alt="Logo Barbearia">
+            <nav>
+                <a href="./telaPrincipal.html">HOME</a>
+                <a href="./agendamento.html">ADICIONAR AGENDAMENTO</a>
+                <a href="./configuracao.html">CONFIGURAÇÃO</a>
+            </nav>
+        </div>
+        <div class="top-right"></div>
+    </header>
 
-    <form id="formAgendamento">
-    
-    <label>Cliente:</label><br>
-    <select id="nome">
-        <option value="">Selecione um cliente</option>
-    </select>
+    <main class="container-agendamento">
+        <div class="form-card">
+            <h2 id="titulo">Novo Agendamento</h2>
 
-    <br><br>
+            <form id="formAgendamento">
+                <div class="input-group">
+                    <label>Cliente:</label>
+                    <select id="nome">
+                        <option value="">Selecione um cliente</option>
+                    </select>
+                </div>
 
-    <label>Serviço:</label><br>
-    <select id="servico">
-        <option value="">Selecione um serviço</option>
-    </select>
+                <div class="input-group">
+                    <label>Serviço:</label>
+                    <select id="servico">
+                        <option value="">Selecione um serviço</option>
+                    </select>
+                </div>
 
-    <br><br>
+                <div class="input-group">
+                    <label>Horário:</label>
+                    <input type="datetime-local" id="horario" name="horario">
+                </div>
 
-        <label>Horário:</label><br>
-        <input type="datetime-local" id="horario" name="horario"><br><br>
-
-        <button type="submit" id="btnSalvar"> Salvar </button>
-        <button type="button" id="btnCancelar"> Cancelar </button>
-        <button type="button" id="btnExcluir"> Excluir </button>
-    </form>
+                <div class="botoes-form">
+                    <button type="submit" id="btnSalvar" class="btn-acao btn-verde">Salvar</button>
+                    <button type="button" id="btnCancelar" class="btn-acao btn-cinza">Cancelar</button>
+                    <button type="button" id="btnExcluir" class="btn-acao btn-vermelho">Excluir</button>
+                </div>
+            </form>
+        </div>
+    </main>
 
     <script src="../js/agendamento.js"></script>
 </body>
-
 </html>

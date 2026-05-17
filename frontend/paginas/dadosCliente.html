@@ -1,51 +1,70 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dados Clientes</title>
-
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 
 <body>
-    <h3>CADASTRAR CLIENTE</h3>
-    
-    <input type="text" id="nomeCliente" placeholder="Nome"><br>
-    <input type="text" id="celularCliente" placeholder="(11) 9xxxx-xxxx" maxlength="15"><br>
-    
-    <br><br>
+    <header>
+        <div class="logo">
+            <img src="/imgs/icons/barba.png" alt="Logo Barbearia">
+            <nav>
+                <a href="./telaPrincipal.html"> HOME </a>
+                <a href="./agendamento.html"> ADICIONAR AGENDAMENTO </a>
+                <a href="./configuracao.html"> CONFIGURAÇÃO </a>
+            </nav>
+        </div>
+        <div class="top-right"></div>
+    </header>
 
-    <button id="btnAdicionar">ADICIONAR</button>
-    <button id="btnCancelarCadastro">CANCELAR</button>
+    <main class="container-clientes">
+        
+        <div class="card-cliente">
+            <h3>CADASTRAR CLIENTE</h3>
+            <div class="input-group-cliente">
+                <input type="text" id="nomeCliente" placeholder="Nome">
+            </div>
+            <div class="input-group-cliente">
+                <input type="text" id="celularCliente" placeholder="(11) 9xxxx-xxxx" maxlength="15">
+            </div>
+            <div class="botoes-cliente">
+                <button id="btnAdicionar" class="btn-cliente btn-verde">ADICIONAR</button>
+                <button id="btnCancelarCadastro" class="btn-cliente btn-cinza">CANCELAR</button>
+            </div>
+        </div>
 
-    <br><br>
+        <div class="card-cliente">
+            <h3>PROCURAR CLIENTE</h3>
+            <div class="input-group-cliente">
+                <input type="text" id="buscarNome" placeholder="Nome">
+            </div>
+            <div class="input-group-cliente">
+                <input type="text" id="buscarCelular" placeholder="(11) 9xxxx-xxxx">
+            </div>
+            <div class="botoes-cliente">
+                <button id="btnProcurar" class="btn-cliente btn-laranja">PROCURAR</button>
+                <button id="btnCancelarBusca" class="btn-cliente btn-cinza">CANCELAR</button>
+            </div>
 
-    <h3>PROCURAR CLIENTE</h3>
+            <hr class="divisor-cliente">
 
-    <input type="text" id="buscarNome" placeholder="Nome"><br>
-    <input type="text" id="buscarCelular" placeholder="(11) 9xxxx-xxxx"><br>
-    
-    <br><br>
+            <h3>LISTA DE CLIENTES</h3>
+            <div class="lista-clientes">
+                <ul id="listaClientes">
+                    </ul>
+            </div>
 
-    <button id="btnProcurar">PROCURAR</button>
-    <button id="btnCancelarBusca">CANCELAR</button>
+            <div class="botoes-cliente">
+                <button id="btnModificar" class="btn-cliente btn-azul">MODIFICAR</button>
+                <button id="btnExcluir" class="btn-cliente btn-vermelho">EXCLUIR</button>
+            </div>
+        </div>
 
-    <br><br>
-
-    <h3>LISTA</h3>
-
-    <div class="lista-clientes">
-
-        <ul id="listaClientes"></ul>
-
-    </div>
-
-    <button id="btnModificar">MODIFICAR</button>
-    <button id="btnExcluir">EXCLUIR</button>
+    </main>
 
     <script src="../js/dadosClientes.js"></script>
-
 </body>
 </html>

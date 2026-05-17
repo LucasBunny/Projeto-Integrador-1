@@ -188,5 +188,468 @@ nav a:hover {
     padding: 22px 35px;
 }
 
+/* =========================================
+   ESTILOS ESPECÍFICOS: PÁGINA DE AGENDAMENTO
+   ========================================= */
 
+/* Centraliza o formulário na tela */
+.container-agendamento {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Usa a altura total da tela, menos os 80px do seu header */
+    min-height: calc(100vh - 80px); 
+    padding: 20px;
+}
 
+/* O cartão com a identidade visual da barbearia */
+.form-card {
+    background-color: rgba(255, 190, 120, 0.8); /* Fundo translúcido como no seu .card */
+    border: 2px solid #111;
+    border-radius: 8px;
+    padding: 30px 40px;
+    width: 100%;
+    max-width: 450px; /* Evita que o formulário fique esticado no PC */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-card h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+/* Organização dos labels e inputs */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.input-group select,
+.input-group input {
+    padding: 10px;
+    border: 2px solid #111;
+    border-radius: 5px;
+    font-size: 15px;
+    background-color: #fff;
+    outline: none;
+}
+
+.input-group select:focus,
+.input-group input:focus {
+    border-color: #ff8c1a; /* Destaca de laranja ao clicar */
+}
+
+/* Organização dos botões usando Flexbox */
+.botoes-form {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-acao {
+    flex: 1; /* Faz todos os botões terem o mesmo tamanho */
+    padding: 10px;
+    border: 2px solid #111;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    color: #111;
+}
+
+.btn-acao:hover {
+    transform: scale(1.05);
+}
+
+.btn-verde { background-color: #4CAF50; color: white;}
+.btn-cinza { background-color: #9e9e9e; color: white;}
+.btn-vermelho { background-color: #f44336; color: white;}
+
+/* =========================================
+   ESTILOS ESPECÍFICOS: DADOS SERVIÇOS
+   ========================================= */
+
+/* Container que centraliza os cartões na tela */
+.container-servicos {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinha os cartões pelo topo */
+    flex-wrap: wrap;         /* Se a tela for pequena (celular), joga o segundo card para baixo */
+    gap: 30px;               /* Espaço entre os dois cartões */
+    min-height: calc(100vh - 80px);
+    padding: 40px 20px;
+}
+
+/* O cartão seguindo o padrão da Barbearia */
+.card-servico {
+    background-color: rgba(255, 190, 120, 0.8);
+    border: 2px solid #111;
+    border-radius: 8px;
+    padding: 25px;
+    width: 100%;
+    max-width: 420px; /* Largura máxima ideal */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card-servico h3 {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+/* Inputs da tela de serviços */
+.input-group-servico input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #111;
+    border-radius: 5px;
+    font-size: 15px;
+    background-color: #fff;
+    outline: none;
+}
+
+.input-group-servico input:focus {
+    border-color: #ff8c1a;
+}
+
+/* Linha sutil para separar a busca da lista dentro do mesmo card */
+.divisor-servico {
+    border: 0;
+    border-top: 2px dashed #111;
+    margin: 10px 0;
+}
+
+/* Ajuste na sua lista para ela herdar as bordas grossas do seu padrão */
+.lista-servico {
+    width: 100% !important; /* Força a lista a usar a largura total do cartão */
+    background-color: #fff;
+    border: 2px solid #111 !important; 
+    border-radius: 5px;
+}
+
+.lista-servico li {
+    border-bottom: 1px solid #ccc !important;
+}
+
+.lista-servico li:last-child {
+    border-bottom: none !important;
+}
+
+/* Configuração dos botões */
+.botoes-servico {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-servico {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #111;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-servico:hover {
+    transform: scale(1.04);
+}
+
+/* Cores dos botões */
+.btn-verde { background-color: #4CAF50; color: white; }
+.btn-cinza { background-color: #9e9e9e; color: white; }
+.btn-laranja { background-color: #ff8c1a; color: #111; }
+.btn-azul { background-color: #2196F3; color: white; }
+.btn-vermelho { background-color: #f44336; color: white; }
+
+/* =========================================
+   ESTILOS ESPECÍFICOS: DADOS CLIENTES
+   ========================================= */
+
+/* Container que centraliza os cartões de clientes na tela */
+.container-clientes {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;         /* Garante que fique um embaixo do outro no celular */
+    gap: 30px;               /* Espaço entre os cartões */
+    min-height: calc(100vh - 80px);
+    padding: 40px 20px;
+}
+
+/* Cartão seguindo a identidade visual translúcida */
+.card-cliente {
+    background-color: rgba(255, 190, 120, 0.8);
+    border: 2px solid #111;
+    border-radius: 8px;
+    padding: 25px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card-cliente h3 {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+/* Estilização dos inputs */
+.input-group-cliente input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #111;
+    border-radius: 5px;
+    font-size: 15px;
+    background-color: #fff;
+    outline: none;
+}
+
+.input-group-cliente input:focus {
+    border-color: #ff8c1a;
+}
+
+/* Divisor tracejado idêntico ao de serviços */
+.divisor-cliente {
+    border: 0;
+    border-top: 2px dashed #111;
+    margin: 10px 0;
+}
+
+/* Ajustando o comportamento da lista interna do cartão */
+.lista-clientes {
+    width: 100% !important; /* Força a ocupar toda a largura do cartão */
+    background-color: #fff;
+    border: 2px solid #111 !important;
+    border-radius: 5px;
+}
+
+.lista-clientes li {
+    border-bottom: 1px solid #ccc !important;
+}
+
+.lista-clientes li:last-child {
+    border-bottom: none !important;
+}
+
+/* Alinhamento dos botões */
+.botoes-cliente {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-cliente {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #111;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-cliente:hover {
+    transform: scale(1.04);
+}
+
+/* =========================================
+   ESTILOS ESPECÍFICOS: PÁGINA DE LOGIN (INDEX)
+   ========================================= */
+
+/* Centraliza o card de login no meio exato do ecrã */
+.wrapper-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ocupa 100% da altura da janela do navegador */
+    padding: 20px;
+}
+
+/* O Card de Login seguindo o padrão translúcido da barbearia */
+.wrapper-login .container_card {
+    background-color: rgba(255, 190, 120, 0.8);
+    border: 2px solid #111;
+    border-radius: 8px;
+    padding: 35px 30px;
+    width: 100%;
+    max-width: 380px; /* Tamanho ideal para um card de login */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.top_card h2 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* Espaçamento dos inputs */
+.inputs_card {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-group-login {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-group-login label {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.input-group-login input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #111;
+    border-radius: 5px;
+    font-size: 15px;
+    background-color: #fff;
+    outline: none;
+}
+
+.input-group-login input:focus {
+    border-color: #ff8c1a;
+}
+
+/* Organização dos botões em coluna */
+.buttons_card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #111;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-login:hover {
+    transform: scale(1.03);
+}
+
+/* Cores dos botões seguindo o padrão do sistema */
+.btn-entrar {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-criar-conta {
+    background-color: #ff8c1a;
+    color: #111;
+}
+
+/* =========================================
+   ESTILOS ESPECÍFICOS: CRIAR CONTA
+   ========================================= */
+
+/* Centraliza o card de cadastro no meio exato da tela */
+.wrapper-cadastro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* O Card de Cadastro seguindo o padrão translúcido */
+.card-cadastro {
+    background-color: rgba(255, 190, 120, 0.8);
+    border: 2px solid #111;
+    border-radius: 8px;
+    padding: 35px 30px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Alinhamento dos grupos de input */
+.input-group-cadastro {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 12px;
+}
+
+.input-group-cadastro label {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.input-group-cadastro input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #111;
+    border-radius: 5px;
+    font-size: 15px;
+    background-color: #fff;
+    outline: none;
+}
+
+.input-group-cadastro input:focus {
+    border-color: #ff8c1a;
+}
+
+/* Estilização dos botões de cadastro */
+.btn-cadastro {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #111;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-cadastro:hover {
+    transform: scale(1.03);
+}
+
+.btn-salvar {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-cancelar {
+    background-color: red;
+    color: white;
+}
