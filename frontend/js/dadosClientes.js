@@ -126,7 +126,7 @@ btnAdicionar.addEventListener("click", async function () {
 
             clienteSelecionado = null;
 
-        } 
+        }
         // MODO ADICIONAR
         else {
 
@@ -209,12 +209,13 @@ btnCancelarCadastro.addEventListener("click", function () {
         .forEach(li => li.classList.remove("selecionado"));
 });
 
-// BUSCA
+// CANCELAR BUSCA
 btnCancelarBusca.addEventListener("click", function () {
     buscarNome.value = "";
     buscarCelular.value = "";
 });
 
+// BUSCA
 btnProcurar.addEventListener("click", function () {
 
     let encontrou = false;
@@ -227,15 +228,22 @@ btnProcurar.addEventListener("click", function () {
 
     clienteSelecionado = null;
 
-    clientes.forEach((cliente) => {
+    clientes.forEach((cliente, index) => {
 
         const nomeOk = cliente.nome.toLowerCase().includes(nomeBusca);
         const celularOk = cliente.telefone.includes(celularBusca);
 
         if (nomeOk && celularOk) {
             encontrou = true;
+
+            const item = listaClientes.children[index];
+            if (item) {
+                item.classList.add("selecionado");
+            }
         }
     });
 
-    alert(encontrou ? "Cliente encontrado!" : "Cliente não encontrado!");
+    if (!encontrou) {
+        alert("Cliente não encontrado!");
+    }
 });

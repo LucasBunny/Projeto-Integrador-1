@@ -202,6 +202,8 @@ btnProcurar.addEventListener("click", function () {
     document.querySelectorAll("#listaServico li")
         .forEach(li => li.classList.remove("selecionado"));
 
+    let encontrou = false;
+
     servicos.forEach((servico, index) => {
 
         if (servico.nome.toLowerCase().includes(busca)) {
@@ -209,6 +211,11 @@ btnProcurar.addEventListener("click", function () {
             const item = listaServico.children[index];
 
             if (item) item.classList.add("selecionado");
+            encontrou = true;
         }
     });
+
+    if (!encontrou) {
+        alert("Serviço não encontrado!");
+    }
 });

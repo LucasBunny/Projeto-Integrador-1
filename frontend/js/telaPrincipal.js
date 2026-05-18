@@ -36,6 +36,22 @@ async function carregarAgendamentos() {
 
     lista.innerHTML = "";
 
+    // SE A LISTA ESTIVER VAZIA, EXIBE A MENSAGEM
+    if (agendamentos.length === 0) {
+        const mensagemVazia = document.createElement("p");
+        mensagemVazia.textContent = "Sem agendamentos criados!";
+
+        mensagemVazia.style.textAlign = "center";
+        mensagemVazia.style.gridColumn = "1 / -1";
+        mensagemVazia.style.fontSize = "18px";
+        mensagemVazia.style.fontWeight = "bold";
+        mensagemVazia.style.marginTop = "30px";
+
+        lista.appendChild(mensagemVazia);
+        return;
+    }
+
+    // SE TIVER AGENDAMENTOS, MONTA OS CARDS NORMALMENTE
     agendamentos.forEach(function (agendamento) {
 
         const card = document.createElement("div");
@@ -62,6 +78,21 @@ async function carregarAgendamentos() {
         });
 
         lista.appendChild(card);
+    });
+}
+
+// BOTAO LOGOUT (SAIR)
+const btnSair = document.getElementById("btnSair");
+
+if (btnSair) {
+    btnSair.addEventListener("click", function (evento) {
+        evento.preventDefault(); // Impede o link '#' de recarregar a página
+        
+        // Limpa os dados do usuário logado no navegador
+        localStorage.removeItem("usuarioLogado"); 
+        
+        // Redireciona para a tela de login
+        window.location.href = "./index.html";
     });
 }
 
