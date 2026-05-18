@@ -7,18 +7,29 @@
     <title>Configuração</title>
 </head>
 <body>
+
     <header>
         <div class="logo">
             <img src="/imgs/icons/barba.png" alt="Logo Barbearia">
             <nav>
                 <a href="./telaPrincipal.html">HOME</a>
                 <a href="./agendamento.html">ADICIONAR AGENDAMENTO</a>
-                <a href="./configuracoes.html">CONFIGURAÇÃO</a>
+                <a href="./configuracao.html">CONFIGURAÇÃO</a>
             </nav>
         </div>
+        <div class="top-right"></div>
+    </header>
 
-    <button class="config-btn" id="btnClientes"> CLIENTES </button>
-    <button class="config-btn" id="btnServicos"> SERVIÇOS </button>
+    <main class="container-config">
+        <div class="card-config">
+            <h2>CONFIGURAÇÕES</h2>
+            
+            <div class="botoes-config">
+                <button class="config-btn" id="btnClientes">CLIENTES</button>
+                <button class="config-btn" id="btnServicos">SERVIÇOS</button>
+            </div>
+        </div>
+    </main>
 
     <script src="../js/configuracao.js"></script>
 </body>
